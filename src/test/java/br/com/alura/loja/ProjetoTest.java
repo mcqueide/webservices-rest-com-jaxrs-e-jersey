@@ -33,7 +33,7 @@ private HttpServer server;
     	
     	Client client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8080");
-		String conteudo = target.path("/projeto").request().get(String.class);
+		String conteudo = target.path("/projeto/1").request().get(String.class);
 		Projeto projeto = (Projeto)new XStream().fromXML(conteudo);
 		Assert.assertEquals("Minha loja", projeto.getNome());
 	}

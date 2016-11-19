@@ -1,11 +1,15 @@
 package br.com.alura.loja.resource;
 
+import java.net.URI;
+
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -24,10 +28,13 @@ public class ProjetoResource {
 	}
 
 	@POST
-	@Produces(MediaType.APPLICATION_XML)
-	public String adiciona(String projeto_xml){
+	@Consumes(MediaType.APPLICATION_XML)
+	public Response adiciona(String projeto_xml){
 		Projeto projeto = (Projeto) new XStream().fromXML(projeto_xml);
 		new ProjetoDAO().adiciona(projeto);
-		return "<status>sucesso</status>";
+		
+		URI uri = URI.create("/projeto/"+projeto.getId());
+		
+		return Response.created(uri).build();
 	}
 }
